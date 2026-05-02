@@ -1,0 +1,59 @@
+# Зависимости
+node_modules/
+jspm_packages/
+
+# Переменные окружения и секреты
+.env
+.env.local
+.env.*.local
+
+# Базы данных SQLite
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Логи
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Артефакты сборки и кэш
+dist/
+build/
+coverage/
+.nyc_output/
+.cache/
+.parcel-cache/
+.next/
+.nuxt/
+.turbo/
+
+# Конфиги IDE и редакторов
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Системные файлы ОС
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Временные файлы
+tmp/
+temp/
+*.tmp
+*.pid
+*.seed
+*.pid.lock
+
+# Загружаемые админкой фото товаров — содержимое игнорируем,
+# но саму папку сохраняем через .gitkeep (см. public/uploads/.gitkeep).
+public/uploads/*
+!public/uploads/.gitkeep

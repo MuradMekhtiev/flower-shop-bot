@@ -1,0 +1,26 @@
+<%
+// Навигация — общий блок для desktop sidebar и mobile offcanvas.
+// Подсветка активного пункта по currentPath из res.locals.
+%>
+<ul class="nav nav-pills flex-column">
+  <li class="nav-item">
+    <a class="nav-link <%= currentPath === '/' ? 'active' : '' %>" href="/">
+      <i class="bi bi-speedometer2"></i> Главная
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link <%= currentPath.startsWith('/orders') ? 'active' : '' %>" href="/orders">
+      <i class="bi bi-bag-check"></i> Заказы
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link <%= currentPath.startsWith('/products') ? 'active' : '' %>" href="/products">
+      <i class="bi bi-flower2"></i> Товары
+    </a>
+  </li>
+</ul>
+<form action="/logout" method="POST" class="mt-4">
+  <button type="submit" class="btn btn-outline-light w-100">
+    <i class="bi bi-box-arrow-right"></i> Выйти
+  </button>
+</form>

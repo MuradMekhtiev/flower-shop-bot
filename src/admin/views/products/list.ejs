@@ -1,0 +1,53 @@
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+  <h1 class="mb-0"><%= title %></h1>
+  <a href="/products/new" class="btn btn-primary">
+    <i class="bi bi-plus-lg"></i> Добавить товар
+  </a>
+</div>
+
+<div class="card">
+  <div class="table-responsive">
+    <table class="table table-hover mb-0 align-middle">
+      <thead>
+        <tr>
+          <th style="width: 70px;">Фото</th>
+          <th>Название</th>
+          <th>Цена</th>
+          <th>В наличии</th>
+          <th style="width: 200px;"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (products.length === 0) { %>
+          <tr><td colspan="5" class="text-center text-muted py-4">Товаров нет — добавьте первый.</td></tr>
+        <% } %>
+        <% products.forEach(function(p) { %>
+          <tr>
+            <td>
+              <% if (p.image_path) { %>
+                <img src="<%= p.image_path %>" alt="" class="thumb">
+              <% } else { %>
+                <div class="thumb thumb-empty">—</div>
+              <% } %>
+            </td>
+            <td><%= p.name %></td>
+            <td><%= p.price.toLocaleString('ru-RU') %> ₽</td>
+            <td>
+              <% if (p.in_stock) { %>
+                <span class="badge bg-success">да</span>
+              <% } else { %>
+                <span class="badge bg-secondary">снят с продажи</span>
+              <% } %>
+            </td>
+            <td>
+              <a href="/products/<%= p.id %>/edit" class="btn btn-sm btn-outline-primary">Изменить</a>
+              <form action="/products/<%= p.id %>?_method=DELETE" method="POST" class="d-inline" onsubmit="return confirm('Удалить товар «<%= p.name.replace(/'/g, '&apos;') %>»?');">
+                <button type="submit" class="btn btn-sm btn-outline-danger">Удалить</button>
+              </form>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+</div>

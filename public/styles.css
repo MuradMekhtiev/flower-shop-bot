@@ -1,0 +1,54 @@
+/* Кастомные стили админки поверх Bootstrap 5. */
+
+/* Sidebar — фиксированная ширина, тёмный фон, прилипает к верху страницы. */
+.sidebar {
+  width: 240px;
+  min-height: 100vh;
+  position: sticky;
+  top: 0;
+}
+
+.sidebar h4 {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding-bottom: 0.75rem;
+}
+
+.sidebar .nav-link {
+  color: rgba(255, 255, 255, 0.85) !important;
+  border-radius: 0.375rem;
+  margin-bottom: 0.25rem;
+}
+
+.sidebar .nav-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar .nav-link.active {
+  background: rgba(255, 255, 255, 0.2);
+  font-weight: 500;
+}
+
+/* Превью-фото 50×50 в таблицах. */
+.thumb {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.thumb-empty {
+  background: #e9ecef;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #6c757d;
+  font-size: 0.85rem;
+}
+
+/* На мобильных оставляем место под нижний бар, чтобы контент не залипал. */
+@media (max-width: 767.98px) {
+  main {
+    padding-bottom: 4rem;
+  }
+}

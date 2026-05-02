@@ -1,0 +1,41 @@
+<a href="/products" class="btn btn-link mb-3 px-0"><i class="bi bi-arrow-left"></i> К списку</a>
+<h1 class="mb-4"><%= title %></h1>
+
+<form action="<%= action %>" method="<%= method %>" enctype="multipart/form-data" class="card card-body" style="max-width: 720px;">
+  <div class="mb-3">
+    <label for="f_name" class="form-label">Название <span class="text-danger">*</span></label>
+    <input type="text" id="f_name" name="name" class="form-control" required value="<%= product.name %>">
+  </div>
+
+  <div class="mb-3">
+    <label for="f_description" class="form-label">Описание</label>
+    <textarea id="f_description" name="description" class="form-control" rows="3"><%= product.description || '' %></textarea>
+  </div>
+
+  <div class="mb-3">
+    <label for="f_price" class="form-label">Цена в рублях <span class="text-danger">*</span></label>
+    <input type="number" id="f_price" name="price" min="0" step="1" class="form-control" required value="<%= product.price %>">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Фото</label>
+    <% if (isEdit && product.image_path) { %>
+      <div class="mb-2">
+        <img src="<%= product.image_path %>" alt="" style="max-width: 220px; border-radius: 4px;">
+        <div class="small text-muted mt-1">Текущее фото — загрузите новый файл, чтобы заменить.</div>
+      </div>
+    <% } %>
+    <input type="file" name="image" class="form-control" accept="image/*">
+    <div class="form-text">До 5 МБ. JPEG, PNG, WebP или GIF.</div>
+  </div>
+
+  <div class="form-check mb-3">
+    <input type="checkbox" id="f_in_stock" name="in_stock" value="1" class="form-check-input" <%= product.in_stock ? 'checked' : '' %>>
+    <label class="form-check-label" for="f_in_stock">В наличии (показывать в каталоге бота)</label>
+  </div>
+
+  <div class="d-flex gap-2">
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+    <a href="/products" class="btn btn-outline-secondary">Отмена</a>
+  </div>
+</form>

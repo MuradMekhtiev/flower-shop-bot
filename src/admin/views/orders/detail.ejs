@@ -1,0 +1,86 @@
+<a href="/orders" class="btn btn-link mb-3 px-0"><i class="bi bi-arrow-left"></i> К списку</a>
+
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+  <h1 class="mb-0">Заказ #<%= order.id %></h1>
+  <span class="badge bg-<%= STATUS_BADGES[order.status] %> fs-6"><%= STATUS_LABELS[order.status] %></span>
+</div>
+
+<div class="row g-3">
+  <div class="col-md-5">
+    <div class="card">
+      <div class="card-header">Клиент</div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><strong>Имя:</strong> <%= order.customer_name || '—' %></li>
+        <li class="list-group-item"><strong>Телефон:</strong> <%= order.customer_phone || '—' %></li>
+        <li class="list-group-item"><strong>Адрес:</strong> <%= order.customer_address || '—' %></li>
+        <li class="list-group-item"><strong>Telegram ID:</strong> <%= order.telegram_id || '—' %></li>
+      </ul>
+    </div>
+
+    <div class="card mt-3">
+      <div class="card-header">Сменить статус</div>
+      <div class="card-body">
+        <form action="/orders/<%= order.id %>/status" method="POST" class="row g-2">
+          <div class="col">
+            <select name="status" class="form-select">
+              <% STATUSES.forEach(function(s) { %>
+                <option value="<%= s %>" <%= order.status === s ? 'selected' : '' %>>
+                  <%= STATUS_LABELS[s] %>
+                </option>
+              <% }); %>
+            </select>
+          </div>
+          <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-7">
+    <div class="card">
+      <div class="card-header">Состав заказа</div>
+      <div class="table-responsive">
+        <table class="table mb-0 align-middle">
+          <thead>
+            <tr>
+              <th>Товар</th>
+              <th>Кол-во</th>
+              <th>Цена</th>
+              <th class="text-end">Сумма</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% items.forEach(function(it) { %>
+              <tr>
+                <td>
+                  <% if (it.image_path) { %>
+                    <img src="<%= it.image_path %>" alt="" class="thumb me-2">
+                  <% } %>
+                  <%= it.product_name || `(удалённый товар #${it.product_id})` %>
+                </td>
+                <td><%= it.quantity %></td>
+                <td><%= it.price %> ₽</td>
+                <td class="text-end"><%= it.subtotal.toLocaleString('ru-RU') %> ₽</td>
+              </tr>
+            <% }); %>
+            <tr class="fw-bold table-light">
+              <td colspan="3" class="text-end">Итого</td>
+              <td class="text-end"><%= order.total.toLocaleString('ru-RU') %> ₽</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <% if (order.comment) { %>
+      <div class="card mt-3">
+        <div class="card-header">Комментарий клиента</div>
+        <div class="card-body"><%= order.comment %></div>
+      </div>
+    <% } %>
+
+    <div class="text-muted small mt-2">Создан: <%= order.created_at %></div>
+  </div>
+</div>
