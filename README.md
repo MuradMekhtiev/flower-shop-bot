@@ -160,6 +160,43 @@ Telegram-бот цветочного магазина с веб-админкой
 
 8. Открой админку: http://localhost:3000
 
+## 🚂 Деплой на Railway
+
+Проект адаптирован к деплою одним сервисом на [Railway](https://railway.app):
+бот и админка крутятся в одном Node-процессе, БД и фото товаров — на
+persistent volume. Railway собирает образ через Nixpacks автоматически,
+Dockerfile не нужен. Конфиг сборки/рестарта лежит в [railway.json](./railway.json).
+
+### Шаги
+
+1. **Регистрация.** Зайдите на [railway.app](https://railway.app) и войдите через GitHub.
+2. **Новый проект.** `New Project` → `Deploy from GitHub repo` → выберите `flower-shop-bot`. Railway сразу попытается собрать сервис — первый билд упадёт, потому что переменных нет, это ожидаемо.
+3. **Переменные окружения.** В сервисе откройте вкладку `Variables` и добавьте все 5 переменных из `.env.example`:
+   - `BOT_TOKEN` — токен от @BotFather
+   - `ADMIN_USERNAME`, `ADMIN_PASSWORD` — логин/пароль админки
+   - `SESSION_SECRET` — длинная случайная строка (можно сгенерировать `node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"`)
+   - `PORT` — **не задавайте**, Railway проставит её сам
+4. **Persistent volume.** `Settings` → `Volumes` → `Mount Volume`. Mount path: `/app/data`. Этот том переживает редеплои — на нём будут лежать `data.db` и загруженные фото.
+5. **Пути на volume.** В `Variables` добавьте ещё две переменные:
+   - `DB_PATH=/app/data/data.db`
+   - `UPLOADS_PATH=/app/data/uploads`
+6. **Публичный домен.** `Settings` → `Networking` → `Generate Domain`. Получится URL вида `https://flower-shop-bot-production.up.railway.app` — это и есть админка.
+7. **Готово.** Railway автоматически сделает редеплой после сохранения переменных. Бот стартует на polling, админка доступна по выданному домену 24/7.
+
+### Проверка после деплоя
+
+- Логи (`Deployments` → текущий деплой → `View logs`) должны содержать:
+  - `✅ Админка слушает порт <PORT>`
+  - `✅ Telegram-бот запущен (long polling)`
+- Откройте сгенерированный домен → форма входа.
+- В Telegram отправьте боту `/start` → должен ответить.
+- Сделайте тестовый заказ → он появится в админке.
+
+### Обновления
+
+Любой `git push` в ветку `main` запускает редеплой автоматически.
+Volume сохраняется между деплоями, поэтому БД и фото не теряются.
+
 ## 📁 Структура проекта
 
 ```

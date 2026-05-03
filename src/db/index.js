@@ -6,9 +6,15 @@ const path = require('path');
 const fs = require('fs');
 const Database = require('better-sqlite3');
 
-// Файл БД лежит в корне проекта рядом с index.js.
-// __dirname = .../src/db, поэтому поднимаемся на два уровня вверх.
-const DB_PATH = path.join(__dirname, '..', '..', 'data.db');
+// Путь к файлу БД. В разработке — data.db в корне проекта (рядом с index.js).
+// В продакшене (Railway) задаётся через DB_PATH и указывает на файл внутри
+// persistent volume, чтобы данные переживали редеплои.
+const DB_PATH =
+  process.env.DB_PATH || path.join(__dirname, '..', '..', 'data.db');
+
+// Гарантируем, что родительская директория существует — на свежесмонтированном
+// volume она пустая, и Database() не создаст её сам.
+fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
 
 // Открываем (или создаём) файл БД. В продакшене можно добавить { verbose: console.log }
 // для дебага запросов, но в обычном режиме это шумно.

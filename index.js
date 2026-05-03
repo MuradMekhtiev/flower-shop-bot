@@ -18,9 +18,11 @@ if (missing.length) {
 const PORT = Number(process.env.PORT) || 3000;
 
 // Сначала поднимаем веб-сервер админки (синхронный listen).
+// На Railway внешний URL формируется автоматически (Settings → Networking),
+// поэтому в логе печатаем нейтральное «слушает порт N» без хардкода localhost.
 const adminServer = adminApp.listen(PORT, () => {
-  console.log(`✅ Админка запущена: http://localhost:${PORT}`);
-  console.log('   Логин/пароль из .env (ADMIN_USERNAME / ADMIN_PASSWORD)');
+  console.log(`✅ Админка слушает порт ${PORT}`);
+  console.log('   Логин/пароль из переменных окружения ADMIN_USERNAME / ADMIN_PASSWORD');
 });
 
 // Параллельно стартуем Telegram-бота (long polling).

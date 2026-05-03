@@ -11,13 +11,13 @@ const {
   updateProduct,
   deleteProduct,
 } = require('../../db');
+const { UPLOADS_DIR: UPLOAD_DIR } = require('../paths');
 
 const router = express.Router();
 
 // --- Multer: куда и как сохраняем загруженные фото ---
-// Папка создаётся при первом запуске, чтобы не падать на пустом проекте.
-const UPLOAD_DIR = path.join(__dirname, '..', '..', '..', 'public', 'uploads');
-fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+// UPLOAD_DIR общий для multer (запись) и express.static (отдача) —
+// определён в src/admin/paths.js и учитывает UPLOADS_PATH из окружения.
 
 const storage = multer.diskStorage({
   destination: (_req, _file, cb) => cb(null, UPLOAD_DIR),

@@ -10,13 +10,13 @@ const expressLayouts = require('express-ejs-layouts');
 
 const requireAuth = require('./auth');
 const helpers = require('./helpers');
+const { PROJECT_ROOT, UPLOADS_DIR } = require('./paths');
 const authRoutes = require('./routes/auth');
 const dashboardRoutes = require('./routes/dashboard');
 const ordersRoutes = require('./routes/orders');
 const productsRoutes = require('./routes/products');
 
 const app = express();
-const PROJECT_ROOT = path.join(__dirname, '..', '..');
 
 // --- Шаблонизатор: EJS + общий layout через express-ejs-layouts ---
 // Все view рендерятся внутри views/layout.ejs (за исключением login —
@@ -27,8 +27,15 @@ app.use(expressLayouts);
 app.set('layout', 'layout');
 
 // --- Статика: стили и фото товаров ---
-// Содержимое public/ доступно по корню сайта (например, /styles.css, /uploads/xxx.jpg).
+// Содержимое public/ доступно по корню сайта (например, /styles.css).
 app.use(express.static(path.join(PROJECT_ROOT, 'public')));
+
+// Если UPLOADS_PATH задан и указывает за пределы public/ (например, на
+// смонтированный volume в /app/data/uploads), отдельно отдаём фото по
+// тому же URL-префиксу /uploads. Локально UPLOADS_DIR совпадает с
+// public/uploads и обслуживается основной статикой выше — этот middleware
+// просто дублирует и не мешает.
+app.use('/uploads', express.static(UPLOADS_DIR));
 
 // --- Парсеры тела запроса и cookie ---
 app.use(express.urlencoded({ extended: true }));
