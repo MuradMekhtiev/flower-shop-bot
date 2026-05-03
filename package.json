@@ -14,7 +14,7 @@
   "license": "MIT",
   "type": "commonjs",
   "engines": {
-    "node": ">=18"
+    "node": "20.x"
   },
   "dependencies": {
     "better-sqlite3": "^12.9.0",
